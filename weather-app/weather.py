@@ -5,8 +5,8 @@ import requests
 
 load_dotenv()
 
-def get_current_weather(city="Moscow") :
-    request_url = f"http://api.openweathermap.org/data/2.5/weather?appid={os.getenv('API_KEY')}&q={city}&units=metric"
+def get_current_weather( language, city="Moscow") :
+    request_url = f"http://api.openweathermap.org/data/2.5/weather?appid={os.getenv('API_KEY')}&q={city}&units=metric&lang={language}"
 
     weather_data = requests.get(request_url).json()
 

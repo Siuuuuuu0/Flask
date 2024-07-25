@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from weather import get_current_weather
 from waitress import serve
+from translations import translations
 
 app = Flask(__name__)
 
@@ -13,10 +14,12 @@ def index():
 def get_weather():
     city = request.args.get('city')
 
+    language = request.args.get('language')
+
     if not bool(city.strip()):
         city = "Moscow"
 
-    weather_data = get_current_weather(city)
+    weather_data = get_current_weather(language, city)
 
     if not weather_data["cod"]==200:
         return render_template("city-not-found.html")
@@ -26,7 +29,10 @@ def get_weather():
         title = weather_data["name"], 
         status=weather_data["weather"][0]["description"].capitalize(), 
         temp=f"{weather_data['main']['temp']:.1f}", 
-        feels_like=f"{weather_data['main']['feels_like']:.1f}"
+        feels_like=f"{weather_data['main']['feels_like']:.1f}", 
+        weather_trans=translations[language]['weather'], 
+        feels_like_trans=translations[language]['feels_like'], 
+        and_trans=translations[language]['and']
     )
 
 

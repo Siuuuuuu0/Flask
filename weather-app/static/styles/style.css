@@ -21,3 +21,8 @@ input, button {
     padding: 1rem;
     border-radius: 10px;
 }
+
+select {
+    width: 100px;
+    height: 50px;
+}

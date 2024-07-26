@@ -1,0 +1,22 @@
+Requested city: Moscow, in: Chinese Simplified, at: 2024-07-26 12:01:01
+Request accomplished in: 0.26 seconds
+Requested city: Moscow, in: Chinese Simplified, at: 2024-07-26 12:04:52
+Request accomplished in: 0.34 seconds
+Requested city: Moscow, in: Chinese Simplified, at: 2024-07-26 12:06:14
+Request accomplished in: 0.25 seconds
+Requested city: Moscow, in: Chinese Simplified, at: 2024-07-26 12:07:30
+Request accomplished in: 0.28 seconds
+Requested city: Moscow, in: Chinese Simplified, at: 2024-07-26 12:07:31
+Request accomplished in: 0.29 seconds
+Requested city: Moscow, in: Chinese Simplified, at: 2024-07-26 12:08:34
+Request accomplished in: 0.25 seconds
+Requested city: New York, in: Chinese Simplified, at: 2024-07-26 12:08:43
+Request accomplished in: 0.22 seconds
+Requested city: kjh dgn, in: Chinese Simplified, at: 2024-07-26 12:08:48
+Request accomplished in: 0.33 seconds
+Requested city: Moscow, in: Chinese Simplified, at: 2024-07-26 12:08:51
+Request accomplished in: 0.21 seconds
+Requested city: Barc, in: Arabic, at: 2024-07-26 12:08:59
+Request accomplished in: 0.29 seconds
+Requested city: Barcelona, in: Japanese, at: 2024-07-26 12:09:10
+Request accomplished in: 0.22 seconds

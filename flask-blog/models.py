@@ -1,4 +1,4 @@
-from api import db
+from create_app import db
 from datetime import datetime
 
 class User(db.Model):

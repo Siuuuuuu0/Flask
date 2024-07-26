@@ -1,6 +1,5 @@
 from flask_restful import Resource, reqparse, fields, marshal_with, abort
-from models import User, Comment, Post
-from api import db
+from models import User, Comment, Post, db
 
 user_args = reqparse.RequestParser()
 user_args.add_argument('name', type=str, required=True, help="Name cannot be blank")
@@ -116,6 +115,7 @@ class PostResource(Resource):
         post.user_id = args["user_id"]
         db.session.commit()
         return post
+    
     @marshal_with(post_fields)
     def delete(self, id):
         post = Post.query.filter_by(id=id).first()
@@ -159,6 +159,7 @@ class CommentResource(Resource):
         comment.user_id = args["user_id"]
         db.session.commit()
         return comment
+    
     @marshal_with(comment_fields)
     def delete(self, id):
         comment = Comment.query.filter_by(id=id).first()

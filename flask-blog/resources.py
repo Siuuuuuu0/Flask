@@ -40,15 +40,12 @@ comment_fields = {
     'user_id': fields.Integer
 }
 
-
-class UserResource(Resource):
+class UsersResource(Resource):
     @marshal_with(user_fields)
-    def get(self, id):
-        user = User.query.filter_by(id=id).first()
-        if not user:
-            abort(404, message="User not found")
-        return user
-
+    def get(self):
+        users = User.query.all()
+        return users
+    
     @marshal_with(user_fields)
     def post(self):
         args = user_args.parse_args()
@@ -57,6 +54,49 @@ class UserResource(Resource):
         db.session.commit()
         return user, 201
 
+class UserResource(Resource):
+    @marshal_with(user_fields)
+    def get(self, id):
+        user = User.query.filter_by(id=id).first()
+        if not user:
+            abort(404, message="User not found")
+        return user
+    @marshal_with(user_fields)
+    def patch(self, id):
+        user = User.query.filter_by(id=id).first()
+        args = user_args.parse_args()
+        if not user:
+            abort(404)
+        user.name = args["name"]
+        user.email = args["email"]
+        user.password = args["password"]
+        db.session.commit()
+        return user
+    @marshal_with(user_fields)
+    def delete(self, id):
+        user = User.query.filter_by(id=id).first()
+        if not user:
+            abort(404)
+        db.session.delete(user)
+        db.session.commit()
+        users = User.query.all()
+        return users, 204
+
+
+class PostsResource(Resource):
+    @marshal_with(post_fields)
+    def get(self):
+        posts = Post.query.all()
+        return posts
+
+    @marshal_with(post_fields)
+    def post(self):
+        args = post_args.parse_args()
+        post = Post(name=args['name'], content=args['content'], user_id=args['user_id'])
+        db.session.add(post)
+        db.session.commit()
+        return post, 201
+    
 class PostResource(Resource):
     @marshal_with(post_fields)
     def get(self, id):
@@ -66,13 +106,40 @@ class PostResource(Resource):
         return post
 
     @marshal_with(post_fields)
-    def post(self):
+    def patch(self, id):
+        post = Post.query.filter_by(id=id).first()
         args = post_args.parse_args()
-        post = Post(name=args['name'], content=args['content'])
-        db.session.add(post)
+        if not post:
+            abort(404)
+        post.name = args["name"]
+        post.content = args["content"]
+        post.user_id = args["user_id"]
         db.session.commit()
-        return post, 201
+        return post
+    @marshal_with(post_fields)
+    def delete(self, id):
+        post = Post.query.filter_by(id=id).first()
+        if not post:
+            abort(404)
+        db.session.delete(post)
+        db.session.commit()
+        posts = Post.query.all()
+        return posts, 204
 
+class CommentsResource(Resource):
+    @marshal_with(comment_fields)
+    def get(self):
+        comments = Comment.query.all()
+        return comments
+
+    @marshal_with(comment_fields)
+    def comment(self):
+        args = comment_args.parse_args()
+        comment = Comment(post_id=args['post_id'], content=args['content'], user_id=args['user_id'])
+        db.session.add(comment)
+        db.session.commit()
+        return comment, 201
+    
 class CommentResource(Resource):
     @marshal_with(comment_fields)
     def get(self, id):
@@ -82,9 +149,22 @@ class CommentResource(Resource):
         return comment
 
     @marshal_with(comment_fields)
-    def post(self):
+    def patch(self, id):
+        comment = Comment.query.filter_by(id=id).first()
         args = comment_args.parse_args()
-        comment = Comment(content=args['content'], post_id=args['post_id'], user_id=args['user_id'])
-        db.session.add(comment)
+        if not comment:
+            abort(404)
+        comment.post_id = args["post_id"]
+        comment.content = args["content"]
+        comment.user_id = args["user_id"]
         db.session.commit()
-        return comment, 201
+        return comment
+    @marshal_with(comment_fields)
+    def delete(self, id):
+        comment = Comment.query.filter_by(id=id).first()
+        if not comment:
+            abort(404)
+        db.session.delete(comment)
+        db.session.commit()
+        comments = Comment.query.all()
+        return comments, 204

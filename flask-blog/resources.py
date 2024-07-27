@@ -81,7 +81,6 @@ class UserResource(Resource):
         users = User.query.all()
         return users, 204
 
-
 class PostsResource(Resource):
     @marshal_with(post_fields)
     def get(self):
@@ -169,3 +168,27 @@ class CommentResource(Resource):
         db.session.commit()
         comments = Comment.query.all()
         return comments, 204
+    
+class UserPostsResource(Resource):
+    @marshal_with(post_fields)
+    def get(self, user_id):
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
+            abort(404, message="User not found")
+        return user.posts.all()
+
+class UserCommentsResource(Resource):
+    @marshal_with(comment_fields)
+    def get(self, user_id):
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
+            abort(404, message="User not found")
+        return user.comments.all()
+
+class PostCommentsResource(Resource):
+    @marshal_with(comment_fields)
+    def get(self, post_id):
+        post = Post.query.filter_by(id=post_id).first()
+        if not post:
+            abort(404, message="Post not found")
+        return post.comments.all()

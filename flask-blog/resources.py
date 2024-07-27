@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse, fields, marshal_with, abort
 from models import User, Post, Comment, db
+from flask_login import login_required, current_user
 
 user_args = reqparse.RequestParser()
 user_args.add_argument('name', type=str, required=True, help="Name cannot be blank")
@@ -40,11 +41,13 @@ comment_fields = {
 }
 
 class UsersResource(Resource):
+    @login_required
     @marshal_with(user_fields)
     def get(self):
         users = User.query.all()
         return users
     
+    @login_required
     @marshal_with(user_fields)
     def post(self):
         args = user_args.parse_args()
@@ -54,12 +57,15 @@ class UsersResource(Resource):
         return user, 201
 
 class UserResource(Resource):
+    @login_required
     @marshal_with(user_fields)
     def get(self, id):
         user = User.query.filter_by(id=id).first()
         if not user:
             abort(404, message="User not found")
         return user
+    
+    @login_required
     @marshal_with(user_fields)
     def patch(self, id):
         user = User.query.filter_by(id=id).first()
@@ -71,6 +77,8 @@ class UserResource(Resource):
         user.password = args["password"]
         db.session.commit()
         return user
+    
+    @login_required
     @marshal_with(user_fields)
     def delete(self, id):
         user = User.query.filter_by(id=id).first()
@@ -82,11 +90,13 @@ class UserResource(Resource):
         return users, 204
 
 class PostsResource(Resource):
+    @login_required
     @marshal_with(post_fields)
     def get(self):
         posts = Post.query.all()
         return posts
 
+    @login_required
     @marshal_with(post_fields)
     def post(self):
         args = post_args.parse_args()
@@ -96,6 +106,7 @@ class PostsResource(Resource):
         return post, 201
     
 class PostResource(Resource):
+    @login_required
     @marshal_with(post_fields)
     def get(self, id):
         post = Post.query.filter_by(id=id).first()
@@ -103,6 +114,7 @@ class PostResource(Resource):
             abort(404, message="Post not found")
         return post
 
+    @login_required
     @marshal_with(post_fields)
     def patch(self, id):
         post = Post.query.filter_by(id=id).first()
@@ -115,6 +127,7 @@ class PostResource(Resource):
         db.session.commit()
         return post
     
+    @login_required
     @marshal_with(post_fields)
     def delete(self, id):
         post = Post.query.filter_by(id=id).first()
@@ -126,11 +139,13 @@ class PostResource(Resource):
         return posts, 204
 
 class CommentsResource(Resource):
+    @login_required
     @marshal_with(comment_fields)
     def get(self):
         comments = Comment.query.all()
         return comments
 
+    @login_required
     @marshal_with(comment_fields)
     def post(self):
         args = comment_args.parse_args()
@@ -140,6 +155,7 @@ class CommentsResource(Resource):
         return comment, 201
     
 class CommentResource(Resource):
+    @login_required
     @marshal_with(comment_fields)
     def get(self, id):
         comment = Comment.query.filter_by(id=id).first()
@@ -147,6 +163,7 @@ class CommentResource(Resource):
             abort(404, message="Comment not found")
         return comment
 
+    @login_required
     @marshal_with(comment_fields)
     def patch(self, id):
         comment = Comment.query.filter_by(id=id).first()
@@ -159,6 +176,7 @@ class CommentResource(Resource):
         db.session.commit()
         return comment
     
+    @login_required
     @marshal_with(comment_fields)
     def delete(self, id):
         comment = Comment.query.filter_by(id=id).first()
@@ -170,6 +188,7 @@ class CommentResource(Resource):
         return comments, 204
     
 class UserPostsResource(Resource):
+    @login_required
     @marshal_with(post_fields)
     def get(self, user_id):
         user = User.query.filter_by(id=user_id).first()
@@ -178,6 +197,7 @@ class UserPostsResource(Resource):
         return user.posts.all()
 
 class UserCommentsResource(Resource):
+    @login_required
     @marshal_with(comment_fields)
     def get(self, user_id):
         user = User.query.filter_by(id=user_id).first()
@@ -186,6 +206,7 @@ class UserCommentsResource(Resource):
         return user.comments.all()
 
 class PostCommentsResource(Resource):
+    @login_required
     @marshal_with(comment_fields)
     def get(self, post_id):
         post = Post.query.filter_by(id=post_id).first()

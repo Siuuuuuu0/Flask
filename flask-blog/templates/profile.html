@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h1>Welcome, {{ user.name }}</h1>
+<h2>Add a Post</h2>
+<form action="{{ url_for('main.add_post') }}" method="post">
+    <label for="name">Post Title:</label>
+    <input type="text" id="name" name="name" required><br>
+    <label for="content">Content:</label>
+    <textarea id="content" name="content" required></textarea><br>
+    <input type="hidden" name="user_id" value="{{ user.id }}">
+    <button type="submit">Add Post</button>
+</form>
+
+<h2>Your Posts</h2>
+<ul>
+    {% for post in user.posts %}
+        <li>{{ post.name }}: {{ post.content }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -9,7 +9,7 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-    app.config['SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     db.init_app(app)
 
     from models import User, Post, Comment
@@ -31,6 +31,9 @@ def create_app():
 
     from auth import auth
     app.register_blueprint(auth, url_prefix='/auth')
+
+    from main import main as main_blueprint
+    app.register_blueprint(main_blueprint, url_prefix='/main')
     
     @app.errorhandler(404)
     def not_found_error(error):

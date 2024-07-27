@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse, fields, marshal_with, abort
-from models import User, Comment, Post, db
+from models import User, Post, Comment, db
 
 user_args = reqparse.RequestParser()
 user_args.add_argument('name', type=str, required=True, help="Name cannot be blank")
@@ -133,7 +133,7 @@ class CommentsResource(Resource):
         return comments
 
     @marshal_with(comment_fields)
-    def comment(self):
+    def post(self):
         args = comment_args.parse_args()
         comment = Comment(post_id=args['post_id'], content=args['content'], user_id=args['user_id'])
         db.session.add(comment)
